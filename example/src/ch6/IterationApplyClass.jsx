@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Input from './InputComponent';
+import WordList from './WordList';
 
 class IterationApplyClass extends Component {
   state = {
@@ -7,34 +9,42 @@ class IterationApplyClass extends Component {
       { id: 2, text: '얼음' },
       { id: 3, text: '눈' }
     ],
-    inputValue: ''
+    value: ''
   };
 
+  inputComp;
+  listComp;
+
   handleChange = e => {
-    // console.log(e.target.value);
-    this.setState({ inputValue: e.target.value });
+    this.setState({
+      value: e.target.value
+    });
   };
 
   handleAddWord = () => {
-    const { names, inputValue } = this.state;
+    const { state } = this;
+    const { names } = state;
 
     const newData = {
       id: names.length + 1,
-      text: inputValue
+      text: state.value
     };
     this.setState(beforeState => {
       return {
         names: [...beforeState.names, newData],
-        inputValue: ''
+        value: ''
       };
     });
   };
 
   handleRemoveListItem = (id) => {
-    // console.log(id);
+    // console.log('here');
+    console.log(id);
     //stateㅇㅔ서 해당 id 가 있는 아이를 제외한 나머지를 찾는다
     // 찾은 요소들을 다시 state에 넣는다.
     const { names } = this.state;
+    
+    // console.log(this.listComp.id);
 
     const filterdArr = names.filter((name, idx) => name.id !== id);
     
@@ -50,21 +60,31 @@ class IterationApplyClass extends Component {
     e.keyCode === ENTER && this.handleAddWord();
   };
 
-  render() {
-    const { state, handleChange, handleAddWord, handleRemoveListItem, handleKeyDown } = this;
-    const { names, inputValue } = state;
+  setRef = ref => {
+    this.inputComp = ref;
+    // console.log(this.inputComp);
+  }
 
-    const namesList = names.map((name, idx) => (
-      <li key={name.id} onDoubleClick={() => handleRemoveListItem(name.id)}>{name.text}</li>
-    ));
+  setListRef = ref => {
+    this.listComp = ref;
+    console.log(this.listComp);
+  }
+
+  render() {
+    const { state, handleChange, handleKeyDown, handleAddWord, handleRemoveListItem, setRef,setListRef } = this;
+    const { names, value } = state;
 
     return (
       <>
         <p>
-          <input onChange={handleChange} value={inputValue} onKeyDown={handleKeyDown} type='text' />
+          <Input 
+            ref={setRef} 
+            handleKeyDown={handleKeyDown} 
+            value={value} 
+            handleChange={handleChange} />
           <button onClick={handleAddWord}>add</button>
         </p>
-        <ul>{namesList}</ul>
+        <WordList ref={setListRef} handleRemoveItem={handleRemoveListItem} names={names} />
       </>
     );
   }
