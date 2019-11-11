@@ -4,7 +4,8 @@ import React, {
 // import IterationApplyClass from './ch6/IterationApplyClass';
 // import LifeCycle from './ch7/LifeCycle';
 // import ErrorBoundary from './ch7/ErrorBoundary';
-import Counter from './ch8/Counter';
+// import Counter from './ch8/Counter';
+import Info from './ch8/Info';
 
 function getRandomColor() {
   return '#' + Math.floor(Math.random() * 16777215).toString(16);
@@ -33,7 +34,8 @@ function getRandomColor() {
 // }
 
 const App = () => { 
-  return <Counter />
+  // return <Counter />
+  return <Info />
 };
 
 export default App;
