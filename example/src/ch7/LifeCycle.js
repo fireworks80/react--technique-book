@@ -70,6 +70,7 @@ class LifeCycle extends Component {
 
     return ( 
       <div>
+          {this.props.missing.value}
         <p style = {style} ref = {ref => this.myRef = ref}> {this.state.number} </p>
         <p>color: {this.state.color}</p>
         <button onClick={this.handleClick}>plus</button>

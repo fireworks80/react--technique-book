@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 // import IterationApplyClass from './ch6/IterationApplyClass';
 import LifeCycle from './ch7/LifeCycle';
+import ErrorBoundary from './ch7/ErrorBoundary';
 
 function getRandomColor() {
   return '#' + Math.floor(Math.random() * 16777215).toString(16);
@@ -18,11 +19,13 @@ class App extends Component {
       color: getRandomColor()
     });
   };
-
   render() {
-    return ( 
+    return (
       <div>
-      <button onClick = {this.handleClick}>random color</button><LifeCycle color = {this.state.color}></LifeCycle>
+        <button onClick={this.handleClick}>random color</button>
+        <ErrorBoundary>
+          <LifeCycle color={this.state.color}></LifeCycle>
+        </ErrorBoundary> 
       </div>
     );
   }
