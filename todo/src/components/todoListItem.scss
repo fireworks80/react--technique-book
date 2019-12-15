@@ -1,0 +1,17 @@
+.checkbox {
+  position: relative;
+
+  [type='checkbox'] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+  }
+
+  &.checked svg {
+    color: #22b8cf;
+  }
+}
