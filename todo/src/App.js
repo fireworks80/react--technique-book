@@ -1,11 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import {
-  MdAdd,
-  MdCheckBoxOutlineBlank,
-  MdCheckBox,
-  MdRemoveCircleOutline
-} from 'react-icons/md';
-import cn from 'classnames';
+import React, { useState, useCallback, useRef } from 'react';
+
+import TodoContainer from './component/TodoContainer';
+import TodoInput from './component/TodoInput';
+import TodoList from './component/TodoList';
 
 const App = () => {
   const [todos, setTodos] = useState([
@@ -25,23 +22,20 @@ const App = () => {
       checked: false
     }
   ]);
-  const [value, setValue] = useState('');
-  const onChange = useCallback(e => {
-    setValue(e.target.value);
-  }, []);
 
-  let lastNum = 3;
-  const onSubmit = useCallback(
-    e => {
-      e.preventDefault();
+  const nextId = useRef(4);
+  const onInsert = useCallback(
+    val => {
       const todo = {
-        id: (lastNum += 1),
-        text: value,
+        id: nextId.current,
+        text: val,
         checked: false
       };
+
       setTodos([...todos, todo]);
+      nextId.current += 1;
     },
-    [todos, value]
+    [todos]
   );
 
   const onToggle = useCallback(
@@ -64,31 +58,10 @@ const App = () => {
 
   return (
     <div>
-      <h1>일정 관리</h1>
-      <form onSubmit={onSubmit}>
-        <input type='text' value={value} onChange={onChange} />
-        <button>
-          <MdAdd />
-        </button>
-      </form>
-      <ul>
-        {todos.map(todo => (
-          <li key={todo.id}>
-            <label className={cn(todo.checked ? 'checked' : '')}>
-              <input
-                type='checkbox'
-                defaultChecked={todo.checked}
-                onChange={() => onToggle(todo.id)}
-              />
-              {todo.checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-              {todo.text}
-            </label>
-            <button onClick={() => onRemove(todo.id)}>
-              <MdRemoveCircleOutline />
-            </button>
-          </li>
-        ))}
-      </ul>
+      <TodoContainer>
+        <TodoInput onInsert={onInsert} />
+        <TodoList todos={todos} onToggle={onToggle} onRemove={onRemove} />
+      </TodoContainer>
     </div>
   );
 };
