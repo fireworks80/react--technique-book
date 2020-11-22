@@ -13,3 +13,5 @@ stack overflow
 
 - node-sass를 4 버전대로 설치
 - dart sass를 이용 (이 방법 사용)
+
+eject를 안해도 sass를 사용할 수 있다.
