@@ -1,12 +1,12 @@
 import TodoListItem from './ToListItem';
 import './TodoList.scss';
 
-const TodoList = () => {
+const TodoList = ({todos}) => {
   return (
     <ul className="TodoList">
-      <TodoListItem />
-      <TodoListItem />
-      <TodoListItem />
+      {todos.map(todo => (
+        <TodoListItem todo={todo} key={todo.id} />
+      ))}
     </ul>
   );
 };
