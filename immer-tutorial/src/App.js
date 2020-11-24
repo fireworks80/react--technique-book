@@ -16,12 +16,18 @@ function App() {
     //   ...form,
     //   [name]: [value]
     // });
-    setForm(
-      produce(form, draft => { 
-        draft[name] =            value;
-      })
-    )
-  }, [form]);
+
+    // setForm(
+    //   produce(form, draft => { 
+    //     draft[name] = value;
+    //   })
+    // )
+
+    setForm(produce(draft => { 
+      draft[name] = value;
+    }));
+
+  }, []);
 
   const onSubmit = useCallback(e => { 
     e.preventDefault();
@@ -38,7 +44,11 @@ function App() {
     //   user: data.user.concat(info)
     // });
 
-    setData(produce(data, draft => { 
+    // setData(produce(data, draft => { 
+    //   draft.user.push(info);
+    // }));
+
+    setData(produce(draft => {
       draft.user.push(info);
     }));
 
@@ -56,10 +66,14 @@ function App() {
     //   user: data.user.filter(info => info.id !== id)
     // });
 
-    setData(produce(data, draft => {
+    // setData(produce(data, draft => {
+    //   draft.user.splice(draft.user.findIndex(info => info.id === id), 1);
+    // }));
+
+    setData(produce(draft => { 
       draft.user.splice(draft.user.findIndex(info => info.id === id), 1);
     }));
-  }, [data]);
+  }, []);
 
 
   return (

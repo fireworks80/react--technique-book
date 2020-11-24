@@ -50,6 +50,23 @@ const anOtherObj = {
 
 **** immer를 사용하면 배열에 직접적 변화를 일으키는 push, splice등의 함수를 사용 해도 무방 ****
 
+### useState의 함수형 업데이트 immer와 같이 쓰기
+```
+...
+
+const onRemove = useCallback(id => {
+  // setData(produce(data, draft => {
+  //  draft.user.splice(draft.user.findIndex(info => info.id === id), 1);
+  // }));
+
+
+  // produce 함수 호출시 첫 파라미터가 함수 형태라면 업데이트 함수를 반환 한다.
+  setData(draft => {
+    draft.user.splice(draft.user.findIndex(info => info.id === id), 1);
+  });
+}, []);
+````
+
 ### 알게된 것 ‼️
 
 - 여러 입력 제어
