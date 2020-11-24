@@ -1,68 +1,158 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Router
+## 라우터 적용하기
 
-## Available Scripts
+src/index.js 파일에서 react-router-dom에 내장된 BrowerRouter 컴포넌트를 사용해서 감싸면 된다.
 
-In the project directory, you can run:
+````
+import {BrowserRouter} from 'react-router-dom';
 
-### `yarn start`
+ReactDOM.render(
+  <React.StrictMode>
+    // BrowserRouter로 App 컴포넌트를 감싼다
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+````
+이 컴포넌트는 웹 어플리케이션에 HTML5 History API를 사용해 페이지를 새로고침하지 않고도 주소를 변경, 현재 주소에 관련된 정보를 props로 쉽게 조회, 사용할 수 있도록 해준다.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 라우터 사용예시
 
-### `yarn test`
+Route 컴포넌트도 react-router-dom에 내장되어 있음
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+````
+<Route path="주소규칙" component={보여 줄 컴포넌트} />
 
-### `yarn build`
+// App.js
+import { Route } from 'react-router-dom';
+import Home from './Home';
+import About from './About';
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+function App() {
+  return (
+    <div>
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+    </div>
+  );
+}
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+export default App;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+````
 
-### `yarn eject`
+localhost:3000/about 할 경우 두개의 컴포넌트가 다 나타난다.
+/about 경로가 /규칙도 일치하기 때문에 발생 이를 수정하려면 Home을 위한 Route 컴포넌트를 사용할때 **** exact **** props를 true로 설정
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Link 컴포넌트를 이용하여 다른 주소로 이동
+Link 컴포넌트를 사용하면 페이지를 새로고침 하지 않고 애플리케이션은 그대로 유지한 상태에서 HTML5 History API를 이용해 페이지 주소만 변경해준다. (react-router-dom에 내장되어 있다)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+````
+<Link to="주소">내용</Link>
+````
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Route 하나로 여러개의 path설정
+````
+<Route to={['/about', '/info']} component={About} />
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+// /about, /info 경로에서 About 컴포넌트를 보여준다
+````
 
-## Learn More
+### URL 파라미터와 쿼리
+- 파라미터: /profile/유동적인 값
+- 쿼리: /about?details=true
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### 파라미터
+````
+function App() {
+  return (
+    <div>
+      <ul>
+        <li><Link to="/">홈</Link></li>
+        <li><Link to="/about">About</Link></li>
+        // /velopert라는 파라미터 값을 사용
+        <li><Link to="/profile/velopert">velopert 프로파일</Link></li>
+      </ul>
+      <Route path="/" component={Home} exact={true} />
+      <Route path={['/about', '/info']} component={About} />
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+      // Route 컴포넌트에서 path의 :username 이라는 속성값으로 받는다.
+      <Route path="/profile/:username" component={Profile} />
+    </div>
+  );
+}
+````
 
-### Code Splitting
+````
+const data = {
+  velopert: {
+    name: '김민준',
+    description: '리액트를 좋아하는 개발자'
+  },
+  gildong: {
+    name: '홍길동',
+    description: '고전 소설 홍길동 주인공'
+  }
+};
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+// props의 match 객체의 params 객체로 받는다.
+const Profile = ({match}) => {
+  console.log(match);
+  const { username } = match.params;
+  const profile = data[username];
 
-### Analyzing the Bundle Size
+  if (!profile) {
+    return <div>존재하지 않는 사용자</div>
+  }
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+  return (
+    <div>
+      <h3>{username} ({profile.name})</h3>
+    </div>
+  );
+};
 
-### Making a Progressive Web App
+````
+#### 쿼리
+location 객체에 들어있는 search값에서 조회 할 수 있다.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```` 
+// location 객체
+// localhost:3000/about?detail=true
+{
+  "pathname" : "/about",
+  "search" : "?detail=true",
+  "hash": ""
+}
+````
 
-### Advanced Configuration
+쿼리 문자열을 객체로 변활할 때는 qs라는 라이브러리를 사용한다.
+**** 쿼리를 사용할 때 쿼리 문자열을 객체로 파싱하는 과정에서 결과 값은 언제나 문자열이다 ****
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+````
+// About.js
 
-### Deployment
+import qs from 'qs';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+const About = ({location}) => {
+  const query = qs.parse(location.search, {
+    ignoreQueryPrefix: true // 이 설정은 문자열 맨 앞의 ?를 생략합니다.
+  });
 
-### `yarn build` fails to minify
+  const showDetail = query.detail === 'true';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+  return (
+    <div>
+      <h1>소개</h1>
+      <p>이 프로젝트는 리액트 라우터 기초를 실습해 보는 예제 프로젝트임.</p>
+      {showDetail && <p>detail 값을 true로 설정 하셨군요</p>}
+    </div>
+  );
+ };
+
+export default About;
+
+````

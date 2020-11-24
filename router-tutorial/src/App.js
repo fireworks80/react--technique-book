@@ -1,22 +1,20 @@
-import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import './App.css';
 import Home from './Home';
 import About from './About';
+import Profile from './Profile';
 
 function App() {
   return (
-    <div className='App'>
+    <div>
       <ul>
-        <li>
-          <Link to='/'>Home</Link>
-        </li>
-        <li>
-          <Link to='/about'>About</Link>
-        </li>
+        <li><Link to="/">홈</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/profile/velopert">velopert 프로파일</Link></li>
+        <li><Link to="/profile/gildong">gildong 프로파일</Link></li>
       </ul>
-      <Route path='/' component={Home} exact={true} />
-      <Route path='/about' component={About} />
+      <Route path="/" component={Home} exact={true} />
+      <Route path={['/about', '/info']} component={About} />
+      <Route path="/profile/:username" component={Profile} />
     </div>
   );
 }
