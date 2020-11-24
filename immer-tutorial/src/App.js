@@ -2,45 +2,51 @@ import {useState, useCallback, useRef} from 'react';
 
 function App() {
   const nextID = useRef(1);
-  const [form, setForm] = useState({name: '', username: ''});
-  const [data, setData] = useState({array: [], uselessValue: null});
+  const [form, setForm] = useState({username: '', name: ''});
+  const [data, setData] = useState({
+    user: [],
+    uselessValue: null
+  });
 
-  const onChange = useCallback(e => {
-    const {name, value} = e.target;
+  const onChange = useCallback(e => { 
+    const { name, value } = e.target;
+
     setForm({
       ...form,
       [name]: [value]
     });
+
   }, [form]);
 
-  const onSubmit = useCallback(e => {
+  const onSubmit = e => { 
     e.preventDefault();
-    const {name, username} = form;
+    const { name, username } = form;
+
     const info = {
       id: nextID.current,
-      name: name,
-      username: username
+      name,
+      username
     };
 
     setData({
       ...data,
-      array: data.array.concat(info)
+      user: data.user.concat(info)
     });
 
     setForm({
-      name: '',
-      username: ''
+      username: '',
+      name: ''
     });
 
     nextID.current += 1;
-  }, [data, form.name, form.username]);
+  };
 
-  const onRemove = useCallback(id => {
+  const onRemove = id => { 
     setData({
       ...data,
-      array: data.array.filter(info => info.id !== id)
+      user: data.user.filter(info => info.id !== id)
     });
-  }, [data]);
+  };
 
 
   return (
@@ -51,12 +57,12 @@ function App() {
         <button>등록</button>
       </form>
       <ul>
-        {data.array.map(info => (
-          <li key={info.id} onClick={() => onRemove(info.id)}>{info.username} ({info.name})</li>
-        ))}
+        {
+          data.user.map(info => <li key={info.id} onClick={() => onRemove(info.id)}>{info.username} ({info.name})</li>)
+        }
       </ul>
     </>
   );
 }
 
-export default App;
+export default App; 

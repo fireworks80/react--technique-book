@@ -47,3 +47,38 @@ const anOtherObj = {
 ````
 처럼 복잡하게 코드를 작성해야 한다.
 이를 쉽게 구현하기 위한 것이 immer 이다.
+
+### 알게된 것 ‼️
+
+- 여러 입력 제어
+여러 input 엘리먼트를 제어 할때 각 엘리먼트에 name attr을 추가하고 event.target.name 값을 통해 핸들러가 어떤 작업을 할지 선택
+
+````
+import React, {useState} from 'react';
+
+function App() {
+  const [form, setForm] = useState({username: '', name: ''});
+  const onSubmit = e => {
+    const {name, value} = e.target;
+
+    setForm({
+      ...form,
+      [name]: value // computed property name 구문을 사용하면 해당 input name 속성에 일치하는 state를 업데이트 한다.
+                    // name key를 가진 값을 value로 설정
+    });
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <input type="text" name="username" />
+      <input type="text" name="name" />
+      <button>등록</button>
+    </form>
+  );
+}
+````
+
+🔗
+- [벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/basic/09-multiple-inputs.html)
+- [객체 초기자 - MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer#%EC%86%8D%EC%84%B1_%EA%B3%84%EC%82%B0%EB%AA%85)
+- [속성 접근자 - MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)
