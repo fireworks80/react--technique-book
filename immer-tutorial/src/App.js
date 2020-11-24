@@ -1,4 +1,5 @@
-import {useState, useCallback, useRef} from 'react';
+import { useState, useCallback, useRef } from 'react';
+import produce from 'immer';
 
 function App() {
   const nextID = useRef(1);
@@ -11,14 +12,18 @@ function App() {
   const onChange = useCallback(e => { 
     const { name, value } = e.target;
 
-    setForm({
-      ...form,
-      [name]: [value]
-    });
-
+    // setForm({
+    //   ...form,
+    //   [name]: [value]
+    // });
+    setForm(
+      produce(form, draft => { 
+        draft[name] =            value;
+      })
+    )
   }, [form]);
 
-  const onSubmit = e => { 
+  const onSubmit = useCallback(e => { 
     e.preventDefault();
     const { name, username } = form;
 
@@ -28,10 +33,14 @@ function App() {
       username
     };
 
-    setData({
-      ...data,
-      user: data.user.concat(info)
-    });
+    // setData({
+    //   ...data,
+    //   user: data.user.concat(info)
+    // });
+
+    setData(produce(data, draft => { 
+      draft.user.push(info);
+    }));
 
     setForm({
       username: '',
@@ -39,14 +48,18 @@ function App() {
     });
 
     nextID.current += 1;
-  };
+  }, [form]);
 
-  const onRemove = id => { 
-    setData({
-      ...data,
-      user: data.user.filter(info => info.id !== id)
-    });
-  };
+  const onRemove = useCallback(id => { 
+    // setData({
+    //   ...data,
+    //   user: data.user.filter(info => info.id !== id)
+    // });
+
+    setData(produce(data, draft => {
+      draft.user.splice(draft.user.findIndex(info => info.id === id), 1);
+    }));
+  }, [data]);
 
 
   return (
