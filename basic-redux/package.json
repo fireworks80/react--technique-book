@@ -1,0 +1,15 @@
+{
+  "name": "basic-redux",
+  "version": "1.0.0",
+  "description": "리액트 상태 관리 라이브러리 컴포넌트의 상태 업데이트 관련 로직을 다른 파일로 분리시켜 효율적으로 관리한다. 전역 상태를 관리할 때 굉장히 효과적이다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "redux": "^4.0.5"
+  }
+}
