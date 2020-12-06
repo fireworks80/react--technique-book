@@ -8,7 +8,7 @@ const initialState = {
   number: 0,
 };
 
-function counter(state = initialState, action) {
+export default function counter(state = initialState, action) {
   switch (action.type) {
     case INCREASE:
       return {
@@ -22,5 +22,3 @@ function counter(state = initialState, action) {
       return state;
   }
 }
-
-export default counter;

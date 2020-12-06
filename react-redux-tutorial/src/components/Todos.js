@@ -1,12 +1,19 @@
+import { useCallback } from 'react';
+
 const TodoItem = ({ todo, onToggle, onRemove }) => {
   return (
-    <li>
-      <label>
-        <input type="checkbox" />
-        <span>예제 텍스트</span>
-        <button type="button">삭제</button>
-      </label>
-    </li>
+    <div>
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onClick={() => onToggle(todo.id)}
+        readOnly
+      />
+      <span>{todo.text}</span>
+      <button type="button" onClick={() => onRemove(todo.id)}>
+        삭제
+      </button>
+    </div>
   );
 };
 
@@ -18,23 +25,38 @@ const Todos = ({
   onToggle,
   onRemove,
 }) => {
-  const onSubmit = (e) => {
-    e.preventDefault();
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      onInsert(input);
+      onChangeInput('');
+    },
+    [onChangeInput, onInsert, input],
+  );
+
+  const onChange = useCallback(
+    (e) => {
+      onChangeInput(e.target.value);
+    },
+    [onChangeInput],
+  );
 
   return (
     <>
       <form onSubmit={onSubmit}>
-        <input type="text" />
-        <button>등록</button>
+        <input type="text" value={input} onChange={onChange} />
+        <button>add</button>
       </form>
-      <ul>
-        <TodoItem />
-        <TodoItem />
-        <TodoItem />
-        <TodoItem />
-        <TodoItem />
-      </ul>
+      <div>
+        {todos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={onToggle}
+            onRemove={onRemove}
+          />
+        ))}
+      </div>
     </>
   );
 };
