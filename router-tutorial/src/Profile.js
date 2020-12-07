@@ -1,26 +1,28 @@
 const data = {
   velopert: {
     name: '김민준',
-    description: '리액트를 좋아하는 개발자'
+    desc: '리액트를 좋아하는 놈',
   },
   gildong: {
-    name: '홍길동',
-    description: '고전 소설 홍길동 주인공'
-  }
+    name: '홍길도',
+    desc: '고전 주인공',
+  },
 };
 
-const Profile = ({match}) => {
-  console.log(match);
+const Profile = ({ match }) => {
   const { username } = match.params;
   const profile = data[username];
-
+  console.log(username);
   if (!profile) {
-    return <div>존재하지 않는 사용자</div>
+    return <p>존재 하지 않는 사용자</p>;
   }
 
   return (
     <div>
-      <h3>{username} ({profile.name})</h3>
+      <h3>
+        {username}({profile.name})
+      </h3>
+      <p>{profile.desc}</p>
     </div>
   );
 };
