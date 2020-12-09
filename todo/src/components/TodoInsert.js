@@ -1,25 +1,28 @@
-import {useState, useCallback} from 'react';
-import {MdAdd} from 'react-icons/md';
+import { useCallback } from 'react';
+import { MdAdd } from 'react-icons/md';
 import './TodoInsert.scss';
 
-const TodoInsert = ({onInsert}) => {
-  const [value, setValue] = useState('');
+const TodoInsert = ({ input, onChangeValue, onInsertValue }) => {
+  const onChange = useCallback(
+    (e) => {
+      onChangeValue(e.target.value);
+    },
+    [onChangeValue]
+  );
 
-  const onChange = useCallback(e => { 
-    setValue(e.target.value);
-  }, []);
-
-
-  const onSubmit = useCallback(e => { 
+  const onSubmit = useCallback((e) => {
     e.preventDefault();
-    onInsert(value);
-    setValue('');
-  }, [value, onInsert]);
+    console.log(input);
+    onInsertValue(input);
+    onChangeValue('');
+  });
 
   return (
-    <form className="TodoInsert" onSubmit={onSubmit}>
-      <input type="text" placeholder="할일 입력" value={value} onChange={onChange} />
-      <button type="submit"><MdAdd /></button>
+    <form className='TodoInsert' onSubmit={onSubmit}>
+      <input type='text' placeholder='할일 입력' value={input} onChange={onChange} />
+      <button type='submit'>
+        <MdAdd />
+      </button>
     </form>
   );
 };

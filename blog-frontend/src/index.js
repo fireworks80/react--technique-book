@@ -2,18 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import rootReducers from './modules';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import reportWebVitals from './reportWebVitals';
-
-const store = createStore(rootReducers, composeWithDevTools());
+import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
-  <Provider store={store}>
+  <BrowserRouter>
     <App />
-  </Provider>,
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
