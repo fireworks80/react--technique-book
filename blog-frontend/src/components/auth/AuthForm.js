@@ -12,10 +12,61 @@ const AuthFormBlock = styled.div`
   }
 `;
 
-const StyledInput = styled.input``;
+const StyledInput = styled.input`
+  font-size: 1rem;
+  border: 0;
+  border-bottom: 1px solid ${palette.gray[5]};
+  padding-bottom: 0.5rem;
+  outline: none;
+  width: 100%;
+  &:focus {
+    border-bottom: 1px solid ${palette.gray[7]};
+  }
+
+  & + & {
+    margin-top: 1rem;
+  }
+`;
+
+const Footer = styled.div`
+  margin-top: 2rem;
+  text-align: right;
+
+  a {
+    color: ${palette.gray[6]};
+    text-decoration: underline;
+
+    &:hover {
+      color: ${palette.gray[9]};
+    }
+  }
+`;
 
 const AuthForm = () => {
-  return <AuthFormBlock>Authform</AuthFormBlock>;
+  return (
+    <AuthFormBlock>
+      <h3>Login</h3>
+      <form>
+        <StyledInput
+          autoCOmplete="username"
+          name="username"
+          placeholder="아이디"
+        />
+        <StyledInput
+          tyle="password"
+          autoCOmplete="new-password"
+          name="password"
+          placeholder="비밀번호"
+        />
+        <Button cyan fullWidth>
+          로그인
+        </Button>
+      </form>
+      <Footer>
+        <Link to="/register">회원가입</Link>
+      </Footer>
+    </AuthFormBlock>
+  );
 };
 
 export default AuthForm;
