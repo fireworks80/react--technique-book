@@ -4,23 +4,31 @@ import { getPost, getUsers } from '../modules/sample';
 
 import { useEffect } from 'react';
 
-const SampleContainer = ({ post, users, loadingPost, loadingUsers, getPost, getUsers }) => {
+const SampleContainer = ({ post, user, loadingPost, loadingUsers, getPost, getUsers }) => {
   useEffect(() => {
-    getPost(1);
-    // getUsers(1);
+    const fn = async () => {
+      try {
+        await getPost(1);
+        // await getUsers(1);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fn();
   }, [getPost]);
   return (
-    <Sample post={post} users={users} loadingPost={loadingPost} loadingUsers={loadingUsers} onHandleUsers={getUsers} />
+    <Sample post={post} users={user} loadingPost={loadingPost} loadingUsers={loadingUsers} onHandleUsers={getUsers} />
   );
 };
 
-const mapStateToProps = ({ sample }) => {
-  console.log(sample);
+const mapStateToProps = ({ sample, loading }) => {
+  const { post, user } = sample;
+  console.log(loading);
   return {
-    post: sample.post,
-    users: sample.users,
-    loadingPost: sample.loading.GET_POST,
-    loadingUsers: sample.loading.GET_USERS,
+    post,
+    user,
+    loadingPost: loading.GET_POST,
+    loadingUsers: loading.GET_USERS,
   };
 };
 
