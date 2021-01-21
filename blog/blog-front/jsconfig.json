@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+  "compileOptions": {
     "target": "es6"
   }
 }
